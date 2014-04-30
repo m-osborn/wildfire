@@ -60,7 +60,42 @@
                 console.log('Spinner changed: ', value); // TEMP
             });
 
+            // Address Search
+            $('#search-address').on('searched', function(e, searchText) {
+                if (searchText) {
+                    var url = "https://maps.googleapis.com/maps/api/geocode/json"
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        data: {
+                            address: searchText.trim(),
+                            sensor: false,
+                            key: "AIzaSyBgedHYoAo_BFxAwpKEJq2PGrhBxN_1LZc"
+                        },
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data);
+                            if (data.status === "OK" && data.results && data.results.length) {
+                                var locObj = data.results[0];
+                                console.log("Lat: " + locObj.geometry.location.lat + ", Lng: " + locObj.geometry.location.lng);
+                                var myLatlng = new google.maps.LatLng(locObj.geometry.location.lat, locObj.geometry.location.lng);
+                                marker.setPosition(myLatlng);
+                                map.setCenter(myLatlng);
+                            } else {
+                                console.log(data.error_message);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+                return false;
+            });
 
+            $('#search-address').on('cleared', function() {
+                console.log('Search Cleared.');
+            });
 
 
 
@@ -96,11 +131,16 @@
 
 
             // Maps
+            var myLatlng = new google.maps.LatLng(39.7683800, -86.1580400)
             var mapOptions = {
-                center: new google.maps.LatLng(39.7683800, -86.1580400),
+                center: myLatlng,
                 zoom: 11
             };
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map
+            });
 
 
         });
@@ -138,6 +178,9 @@
 
 
                     <div style="height: 40px;">
+                        <div id="search-address" class="input-append search">
+                            <input type="text" class="input-medium" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
+                        </div>
 
                         <div id="spinner-label" class="pull-left">
                             <label>Select Radius:</label>
