@@ -72,8 +72,7 @@ app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
 //Tmp route to see DB contents
-// app.get('/geokeys', trigger.geokeys );
-
+app.post('/geokeys', trigger.geokeys );
 
 
 // Custom Wildfire Twitter Activity Routes
@@ -149,40 +148,22 @@ mongoose.connect(MONGOHQ_URL);
 //mongoose.connect('mongodb://localhost/wildfire')
 
 var db = mongoose.connection;
+var gk       = require('../models/geokey');
+var Geokey   = mongoose.model('Geokey', GeokeySchema);
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
     console.log("Connected to db");
 });
 
-
-var gk       = require('../models/geokey');
-var Geokey   = mongoose.model('Geokey', GeokeySchema);
-
+//GET geokeys from db
 app.get('/geokeys', function(req, res) {
   // Let's find all the documents
   Geokey.find({}, function (err, users) {
-         var geokeymap = {};
-         geokeys.forEach(function(geokey) {
+        var geokeymap = {};
+        geokeys.forEach(function(geokey) {
               geokeymap[geokey._id] = geokey;
-         }
-         res.send(geokeymap);  
+        }
+        res.send(geokeymap);  
    });
 };
-
-// // The rudimentary HTML content in three pieces.
-// var html1 = '<title> hello-mongoose: MongoLab MongoDB Mongoose Node.js Demo on Heroku </title> \
-// <head> \
-// <style> body {color: #394a5f; font-family: sans-serif} </style> \
-// </head> \
-// <body> \
-// <h1> hello-mongoose: MongoLab MongoDB Mongoose Node.js Demo on Heroku </h1> \
-// See the <a href="https://devcenter.heroku.com/articles/nodejs-mongoose">supporting article on the Dev Center</a> to learn more about data modeling with Mongoose. \
-// <br\> \
-// <br\> \
-// <br\> <h2> All Documents in MonogoDB database </h2> <pre><code> ';
-// var html2 = '</code></pre> <br\> <i>';
-// var html3 = ' documents. </i> <br\> <br\>';
-// var html4 = '<h2> Queried (name.last = "Doe", age >64) Documents in MonogoDB database </h2> <pre><code> ';
-// var html5 = '</code></pre> <br\> <i>';
-// var html6 = ' documents. </i> <br\> <br\> \
-// <br\> <br\> <center><i> Demo code available at <a href="http://github.com/mongolab/hello-mongoose">github.com</a> </i></center>';
