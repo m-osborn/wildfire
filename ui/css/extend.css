@@ -1,0 +1,36 @@
+#wiz {
+	margin-top: 40px;
+}
+
+
+.step-content {
+	border: 1px solid #D4D4D4;
+	border-top: 0;
+	border-radius: 0 0 4px 4px;
+	height: 400px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+
+#map-container {
+	height: 400px;
+	width: 662px;
+	float: left;
+	padding: 0;
+	margin-bottom: 0px;
+}
+
+#map-canvas {
+	height: 100%;
+	margin: 0px;
+    padding: 0px;
+}
+
+.map-sidebar {
+	background-color: #FFFFFF !important;
+	height: 360px;
+	width: 205px;
+	float: right;
+}
+
