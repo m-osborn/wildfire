@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" class="fuelux">
+<head>
+    <meta charset="utf-8">
+    <title>Project Wildfire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/fuelux.css" rel="stylesheet">
+    <link href="css/extend.css" rel="stylesheet">
+
+    <script src="lib/require.js"></script>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgedHYoAo_BFxAwpKEJq2PGrhBxN_1LZc&sensor=false"></script>
+
+    <style type="text/css">
+
+
+    </style>
+
+    <script>
+        requirejs.config({
+            config: {
+                moment: {
+                    noGlobal: true
+                }
+            },
+            paths: {
+                jquery: 'lib/jquery-1.9.1.min',
+                underscore: 'http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min',
+                bootstrap: 'lib/bootstrap/js',
+                fuelux: 'lib/fuelux',
+                moment: 'lib/moment' // comment out if you dont want momentjs to be default
+            },
+            shim: {
+                underscore: {
+                    exports: '_'
+                }
+            }
+        });
+
+        require(['jquery', 'fuelux/all', 'underscore'], function ($, fuelux) {
+
+            var postData = {
+                map: {
+                    latitude: 39.7683800,
+                    longitude: -86.1580400,
+                    radius: 1
+                },
+                keywords: []
+            };
+
+            var $wizard = $('#wiz');
+            var $wizardButtonNext = $('#btnWizardNext');
+            var $wizardButtonPrev = $('#btnWizardPrev');
+            var $addKeywordField = $('#add-keyword-field');
+
+            var $searchAddress = $('#search-address');
+            var $radiusSpinner = $('#radius-spinner');
+            var MAX_KEYWORDS = 10;
+            var $keywordPillbox = $('#pillbox');
+            var $noKeywordsStr = $('#no-keywords');
+            var $addKeywordButton = $('#add-keyword-label button');
+
+            var $locationKeywordSummary = $('#location-keyword-summary');
+            var $keywordList = $('#keyword-list');
+            var $startButton = $('#start-button');
+
+            // Address Search
+            $searchAddress.on('searched', function(e, searchText) {
+                if (searchText) {
+                    var url = "https://maps.googleapis.com/maps/api/geocode/json"
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        data: {
+                            address: searchText.trim(),
+                            sensor: false,
+                            key: "AIzaSyBgedHYoAo_BFxAwpKEJq2PGrhBxN_1LZc"
+                        },
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data); // TEMP
+                            if (data.status === "OK" && data.results && data.results.length) {
+                                var locObj = data.results[0];
+                                console.log("Lat: " + locObj.geometry.location.lat + ", Lng: " + locObj.geometry.location.lng); // TEMP
+                                var myLatlng = new google.maps.LatLng(locObj.geometry.location.lat, locObj.geometry.location.lng);
+                                marker.setPosition(myLatlng);
+                                circle.setCenter(myLatlng);
+                                map.setCenter(myLatlng);
+                            } else {
+                                console.log(data.error_message); // TEMP
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown); // TEMP
+                        }
+                    });
+                }
+                return false;
+            });
+
+            // Prints the post data to the console
+            // THIS IS TEMPORARY
+            $('#logPostData').on('click', function() {
+                console.log(JSON.stringify(postData, null, 4)); // TEMP
+            });
+
+            $startButton.on('click', function() {
+                $.ajax({
+                    type: "POST",
+                    url: "http://jbdbc-wildfire.herokuapp.com",
+                    data: postData,
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                        console.log(data); // TEMP
+                        if (data.status === "OK" && data.results && data.results.length) {
+                            console.log("Received your post data"); // TEMP
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown); // TEMP
+                    }
+                });
+            });
+
+
+            // ----- Wizard ----------------------------------------------------
+
+            $wizard.on('change', function(e, data) {
+                console.log('changed to step: ' + data.step); // TEMP
+                if(data.step === 2) {
+                    displaySummaryInfo();
+                }
+
+                if(data.step === 3 && data.direction === 'next') {
+                    return e.preventDefault();
+                }
+            });
+            // $wizard.on('changed', function(e, data) {
+            // });
+            $wizard.on('finished', function(e, data) {
+                console.log('finished'); // TEMP
+            });
+            $wizard.on('stepclick', function(e, data) {
+                console.log('step' + data.step + ' clicked'); // TEMP
+                if(data.step === 2) {
+                    displaySummaryInfo();
+                }
+            });
+
+
+            // ----- Mapping view ----------------------------------------------
+
+            // Die Landkarte
+            var myLatlng = new google.maps.LatLng(39.7683800, -86.1580400);
+            var mapOptions = {
+                center: myLatlng,
+                zoom: 11
+            };
+            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            var marker = new google.maps.Marker({
+                draggable: true,
+                position: myLatlng,
+                map: map
+            });
+
+            var circle = new google.maps.Circle({
+                strokeColor: '#009DDC',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#009DDC',
+                fillOpacity: 0.23,
+                map: map,
+                center: myLatlng,
+                radius: postData.map.radius*1609.34 //convert miles to meters
+            });
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                var lat = event.latLng.lat();
+                var lng = event.latLng.lng();
+                postData.map.latitude = lat;
+                postData.map.longitude = lng;
+                myLatlng = new google.maps.LatLng(lat, lng);
+                marker.setPosition(myLatlng);
+                circle.setCenter(myLatlng);
+            });
+
+            google.maps.event.addListener(marker, 'dragstart', function(event) {
+                circle.setVisible(false);
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                myLatlng = marker.getPosition();
+                postData.map.latitude = myLatlng.lat();
+                postData.map.longitude = myLatlng.lng();
+                circle.setCenter(myLatlng);
+                circle.setVisible(true);
+            });
+
+            // Spinner
+            $radiusSpinner.spinner({
+                'value': 1,
+                'min': 1,
+                'max': 10
+            });
+
+            $radiusSpinner.on('changed', function (e, value) {
+                postData.map.radius = value;
+                circle.setRadius(value*1609.34); //convert miles to meters
+                console.log('Spinner changed: ', value); // TEMP
+            });
+
+            // Map search field
+            $searchAddress.on('cleared', function() {
+                console.log('Search Cleared.'); // TEMP
+            });
+
+
+            // ----- Keywords view ----------------------------------
+            var COLOR_COUNTER = 0;
+
+            function getColor() {
+                var color_classes = ['et-green', 'et-purple', 'et-orange', 'et-blue'];
+                var color_class = color_classes[COLOR_COUNTER];
+
+                COLOR_COUNTER = (COLOR_COUNTER+1) % color_classes.length;
+                return color_class;
+            }
+
+            $addKeywordButton.on('click', function() {
+                var $inputField = $('#add-keyword-field');
+                var val = $addKeywordField.val().trim();
+
+                var count = $keywordPillbox.pillbox('itemCount');
+
+                var exists = _($keywordPillbox.pillbox('items')).find(function (item) {
+                    return item.value == val;
+                }) || false;
+
+                if (val !== '' && !exists) {
+                    $keywordPillbox.pillbox('addItem', val, val);
+                    $keywordPillbox.find('li[data-value="' + val + '"]').addClass(getColor());
+                }
+                $inputField.val('');
+            });
+
+            $addKeywordField.on('keydown', function(event) {
+                if (event.keyCode === 13) {
+                    $addKeywordButton.trigger('click');
+                }
+            });
+
+            var showOrHideNoKeywords = function() {
+                var show = ($keywordPillbox.pillbox('items').length === 0) ? true : false;
+                if (show) {
+                    $noKeywordsStr.show();
+                } else {
+                    $noKeywordsStr.hide();
+                }
+            };
+
+            $keywordPillbox.on('added', function(event, value) {
+                var count = $keywordPillbox.pillbox('itemCount');
+                postData.keywords.push(value.value);
+                showOrHideNoKeywords();
+                if (count >= MAX_KEYWORDS) {
+                    $addKeywordButton.addClass('disabled');
+                    $addKeywordField.prop('disabled', true);
+                    $('#add-keyword-label').after('<div id=\'keyword-limit-message\' class=\'pull-right\'>Limit of 10 keywords has been reached!</div>');
+                }
+            });
+            $keywordPillbox.on('removed', function(event, value) {
+                var count = $keywordPillbox.pillbox('itemCount');
+                postData.keywords = _.without(postData.keywords, value.value);
+                showOrHideNoKeywords();
+                if (count <= MAX_KEYWORDS) {
+                    $addKeywordButton.removeClass('disabled');
+                    $addKeywordField.prop('disabled', false);
+                    $('#keyword-limit-message').fadeOut(300, function () {
+                        $('#keyword-limit-message').remove();
+                    });
+                }
+            });
+
+
+            // ----- Confirmation view -----------------------------------------
+
+            var displaySummaryInfo = function() {
+
+                console.log("displaying summary info: ", $locationKeywordSummary); // TEMP
+
+                $locationKeywordSummary.find('#loc-distance').html(postData.radius);
+                $locationKeywordSummary.find('#loc-latlong').html(
+                    postData.map.latitude + " / " + postData.map.longitude);
+
+                if(postData.radius > 1) {
+                    $locationKeywordSummary.find('#loc-units').html('miles');
+                } else {
+                    $locationKeywordSummary.find('#loc-units').html('mile');
+                }
+
+                $keywordList.empty();
+                _.each(postData.keywords, function(keyword) {
+                    $keywordList.append('<li>' + keyword + '</li>');
+                });
+
+                // var myLatlng2 = new google.maps.LatLng(postData.map.latitude, postData.map.longitude);
+                // var mapOptions2 = {
+                //     center: myLatlng2,
+                //     zoom: 11
+                // };
+                // var map2 = new google.maps.Map(document.getElementById("locMap"), mapOptions2);
+                // var marker2 = new google.maps.Marker({
+                //     position: myLatlng2,
+                //     map: map2
+                // });
+            };
+
+
+
+
+
+
+
+
+        });
+    </script>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- WIZARD -->
+    <div>
+        <div id="wiz" class="wizard">
+            <ul class="steps">
+                <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Select Location<span class="chevron"></span></li>
+                <li data-target="#step2"><span class="badge">2</span>Specify Keywords<span class="chevron"></span></li>
+                <li data-target="#step3"><span class="badge">3</span>Confirmation<span class="chevron"></span></li>
+            </ul>
+            <div class="actions">
+                <button id="btnWizardPrev" class="btn btn-mini btn-prev"> <i class="icon-arrow-left"></i>Prev</button>
+                <button id="btnWizardNext" class="btn btn-mini btn-next" data-last="Finish">Next<i class="icon-arrow-right"></i></button>
+            </div>
+        </div>
+        <div class="step-content">
+
+            <!-- Google Map view -->
+            <div class="step-pane active" id="step1">
+                <div id="map-container" class="google-maps clearfix">
+                    <div id="map-canvas"></div>
+                </div>
+                <div id="map-controls">
+                    <div class="pull-left">
+                        <div id="search-address" class="input-append search">
+                            <input type="text" placeholder="Search by Address" class="input-xxlarge"><button type="button" class="btn"><i class="icon-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <div id="spinner-label" class="pull-left">
+                            <label>Select Radius:</label>
+                            <div id="label-desc">(value in miles)</div>
+                        </div>
+                        <div id="radius-spinner" class="spinner pull-right">
+                            <input type="text" class="input-mini spinner-input">
+                            <div class="spinner-buttons btn-group btn-group-vertical">
+                                <button class="btn spinner-up">
+                                    <i class="icon-chevron-up"></i>
+                                </button>
+                                <button class="btn spinner-down">
+                                    <i class="icon-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keyword entry view -->
+            <div class="step-pane" id="step2">
+                <div id="pillbox" class="pillbox">
+                    <div id="no-keywords">no keywords yet!</div>
+                    <ul>
+                    </ul>
+                </div>
+                <div id="add-keyword-label" class="pull-left">
+                    <input type="text" id="add-keyword-field">
+                    <button class="btn btn-primary" type="button">Add Keyword</button>
+                </div>
+            </div>
+
+
+            <!-- Confirmation view -->
+            <div class="step-pane" id="step3">
+
+                <div class="row">
+                    <div class="span12" style="padding-bottom: 20px;">
+                        Your <b>Loyal and Local</b> campaign is about to begin!
+                    </div>
+                </div>
+
+                <div class="row" id="location-keyword-summary">
+                    <div class="span5 pull-left">
+                        <h3><strong>Location</strong></h3>
+
+                        Your campaign will launch within <strong><span id="loc-distance">1</span>
+                        <span id="loc-units">mile</span></strong> of:
+                        <br>
+                        <strong><span id="loc-latlong"></span></strong>
+
+                        <br>
+
+                        <div id="locMap" class="google-maps"></div>
+
+                    </div>
+                    <div class="span6 pull-right">
+                        <h3><strong>Keywords</strong></h3>
+                        <ul id="keyword-list"></ul>
+
+                        <br><br>
+
+                        <button class="btn btn-large btn-primary" id="start-button" type="button">Start</button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <input type="button" class="btn btn-mini" id="logPostData" value="log post data">
+    </div>
+
+
+</div>
+
+</body>
+</html>
