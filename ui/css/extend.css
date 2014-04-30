@@ -57,7 +57,7 @@
 }
 
 
-/* ==== KEYWORK VIEW ====================== */
+/* ==== KEYWORD VIEW ====================== */
 
 #add-keyword-label input {
 	font-weight: bold;
@@ -65,6 +65,10 @@
 	margin-top: 10px;
 }
 
+#keyword-limit-message {
+	padding: 15px 0 0 0;
+	color: red;
+}
 
 .pillbox {
 	border: 1px solid #e2e2e2;

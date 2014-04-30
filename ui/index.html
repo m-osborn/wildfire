@@ -266,6 +266,7 @@
                 if (count >= MAX_KEYWORDS) {
                     $addKeywordButton.addClass('disabled');
                     $addKeywordField.prop('disabled', true);
+                    $('#add-keyword-label').after('<div id=\'keyword-limit-message\' class=\'pull-right\'>Limit of 10 keywords has been reached!</div>');
                 }
             });
             $keywordPillbox.on('removed', function(event, value) {
@@ -275,6 +276,9 @@
                 if (count <= MAX_KEYWORDS) {
                     $addKeywordButton.removeClass('disabled');
                     $addKeywordField.prop('disabled', false);
+                    $('#keyword-limit-message').fadeOut(300, function () {
+                        $('#keyword-limit-message').remove();
+                    });
                 }
             });
 
