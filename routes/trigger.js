@@ -9,5 +9,6 @@ exports.edit = function( req, res ) {
 
 exports.geokeys = function( req, res ) {
     console.log( 'req.body: ', req.body );
-    res.redirect( '/geokeys' );
+    console.log( 'In the triggers route geokeys')
+    res.redirect( '../controllers/geokey' );
 };
