@@ -81,6 +81,7 @@
                                 console.log("Lat: " + locObj.geometry.location.lat + ", Lng: " + locObj.geometry.location.lng);
                                 var myLatlng = new google.maps.LatLng(locObj.geometry.location.lat, locObj.geometry.location.lng);
                                 marker.setPosition(myLatlng);
+                                circle.setCenter(myLatlng);
                                 map.setCenter(myLatlng);
                             } else {
                                 console.log(data.error_message);
@@ -133,24 +134,42 @@
             };
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             var marker = new google.maps.Marker({
+                draggable: true,
                 position: myLatlng,
                 map: map
             });
 
             var circle = new google.maps.Circle({
-                strokeColor: '#FF0000',
+                strokeColor: '#009DDC',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
+                fillColor: '#009DDC',
+                fillOpacity: 0.23,
                 map: map,
                 center: myLatlng,
                 radius: postData.map.radius*1609.34 //convert miles to meters
             });
 
             google.maps.event.addListener(map, 'click', function(event) {
-                postData.map.latitude = event.latLng.lat();
-                postData.map.longitude = event.latLng.lng();
+                var lat = event.latLng.lat();
+                var lng = event.latLng.lng();
+                postData.map.latitude = lat;
+                postData.map.longitude = lng;
+                myLatlng = new google.maps.LatLng(lat, lng);
+                marker.setPosition(myLatlng);
+                circle.setCenter(myLatlng);
+            });
+
+            google.maps.event.addListener(marker, 'dragstart', function(event) {
+                circle.setVisible(false);
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                myLatlng = marker.getPosition();
+                postData.map.latitude = myLatlng.lat();
+                postData.map.longitude = myLatlng.lng();
+                circle.setCenter(myLatlng);
+                circle.setVisible(true);
             });
 
             // Spinner
