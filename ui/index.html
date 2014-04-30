@@ -212,21 +212,23 @@
 
             <!-- Google Map view -->
             <div class="step-pane active" id="step1">
-                <div id="map-container" class="well google-maps">
+
+                <div id="map-container" class="well google-maps clearfix">
                     <div id="map-canvas"></div>
                 </div>
-
-                <div class="map-sidebar well">
-                    <div style="height: 40px;">
+                <div id="controls-container">
+                    <div class="pull-left">
                         <div id="search-address" class="input-append search">
-                            <input type="text" class="input-medium" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
+                            <input type="text" class="input-xxlarge" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
                         </div>
-                        <div id="spinner-label" class="pull-left">
+                    </div>
+                    <div class="pull-right">
+                        <div id="spinner-label">
                             <label>Select Radius:</label>
                             <div id="label-desc">(value is in miles)</div>
                         </div>
 
-                        <div id="radius-spinner" class="spinner pull-right">
+                        <div id="radius-spinner" class="spinner">
                             <input type="text" class="input-mini spinner-input">
 
                             <div class="spinner-buttons  btn-group btn-group-vertical">
@@ -239,7 +241,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
