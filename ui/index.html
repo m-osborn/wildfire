@@ -52,10 +52,11 @@
             var $wizard = $('#wiz');
             var $wizardButtonNext = $('#btnWizardNext');
             var $wizardButtonPrev = $('#btnWizardPrev');
+            var $addKeywordField = $('#add-keyword-field');
 
             var $searchAddress = $('#search-address');
             var $radiusSpinner = $('#radius-spinner');
-            var $keywordPillbox = $('#MyPillbox');
+            var $keywordPillbox = $('#pillbox');
             var $noKeywordsStr = $('#no-keywords');
             var $addKeywordButton = $('#add-keyword-label button');
 
@@ -163,10 +164,21 @@
 
             $addKeywordButton.on('click', function() {
                 var $inputField = $('#add-keyword-field');
-                var val = $inputField.val().trim();
-                $inputField.val('');
-                $keywordPillbox.pillbox('addItem', val, val);
+                var val = $addKeywordField.val().trim();
+
+                if (val !== '') {
+                    $inputField.val('');
+                    $keywordPillbox.pillbox('addItem', val, val);
+                }
             });
+
+            $addKeywordField.on('keydown', function(event) {
+                if (event.keyCode === 13) {
+                    $addKeywordButton.trigger('click');
+                }
+            });
+
+
 
             var showOrHideNoKeywords = function() {
                 var show = ($keywordPillbox.pillbox('items').length === 0) ? true : false;
@@ -245,7 +257,7 @@
 
             <!-- Keyword entry view -->
             <div class="step-pane" id="step2">
-                <div id="MyPillbox" class="pillbox">
+                <div id="pillbox" class="pillbox">
                     <div id="no-keywords">no keywords yet!</div>
                     <ul>
                     </ul>
