@@ -10,9 +10,9 @@ var request     = require('request');
 var routes      = require('./routes');
 var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
-// var geokey      = require('./controllers/geokey');
-// var mongoose    = require('mongoose');
-// var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
+var geokey      = require('./controllers/geokey');
+var mongoose    = require('mongoose');
+var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
 
 var app = express();
 
@@ -135,18 +135,18 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
-// Mongodb to hold jb activity configs
-// mongoose.connect(MONGOHQ_URL);
-// //mongoose.connect('mongodb://localhost/wildfire')
+Mongodb to hold jb activity configs
+mongoose.connect(MONGOHQ_URL);
+//mongoose.connect('mongodb://localhost/wildfire')
 
-// var db       = mongoose.connection;
-// var gk       = require('../models/geokey');
-// var Geokey   = mongoose.model('Geokey', GeokeySchema);
+var db       = mongoose.connection;
+var gk       = require('../models/geokey');
+var Geokey   = mongoose.model('Geokey', GeokeySchema);
 
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function callback() {
-//     console.log("Connected to db");
-// });
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback() {
+    console.log("Connected to db");
+});
 
 // //GET geokeys from db
 // app.get('/geokeys', function(req, res) {
