@@ -2,7 +2,6 @@
 	margin-top: 40px;
 }
 
-
 .step-content {
 	border: 1px solid #D4D4D4;
 	border-top: 0;
@@ -12,6 +11,9 @@
 	margin-bottom: 10px;
 }
 
+
+
+/* ==== MAP VIEW ========================== */
 
 #map-container {
 	height: 400px;
@@ -48,3 +50,46 @@
 	top: -8px;
 	font-style: italic;
 }
+
+
+/* ==== KEYWORK VIEW ====================== */
+
+#add-keyword-label input {
+	font-weight: bold;
+	font-size: 16px;
+	margin-top: 10px;
+}
+
+
+.pillbox {
+	border: 1px solid #e2e2e2;
+	margin-bottom: 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	width: 910px;
+	padding: 20px;
+	height: 340px;
+	max-height: 340px;
+}
+
+.fuelux .pillbox li {
+	font-size: 24px;
+	padding: 8px;
+	margin: 5px;
+}
+
+#no-keywords {
+	font-size: 52px;
+	margin: 136px auto 0 auto;
+	text-align: center;
+	color: #eee;
+	font-weight: bold;
+}
+
+
+
+
+
+
+

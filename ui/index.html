@@ -30,10 +30,15 @@
                 bootstrap: 'lib/bootstrap/js',
                 fuelux: 'lib/fuelux',
                 moment: 'lib/moment' // comment out if you dont want momentjs to be default
+            },
+            shim: {
+                underscore: {
+                    exports: '_'
+                }
             }
         });
 
-        require(['jquery', 'fuelux/all'], function ($, fuelux) {
+        require(['jquery', 'fuelux/all', 'underscore'], function ($, fuelux) {
 
             var postData = {
                 map: {
@@ -41,21 +46,65 @@
                     longitude: -86.1580400,
                     radius: 1
                 },
-                keywords: ''
+                keywords: []
             };
 
+            var $wizard = $('#wiz');
+            var $wizardButtonNext = $('#btnWizardNext');
+            var $wizardButtonPrev = $('#btnWizardPrev');
+
+            var $radiusSpinner = $('#radius-spinner');
+            var $keywordPillbox = $('#MyPillbox');
+            var $noKeywordsStr = $('#no-keywords');
+            var $addKeywordButton = $('#add-keyword-label button');
+
+
+
             // Prints the post data to the console
+            // THIS IS TEMPORARY
             $('#logPostData').on('click', function() {
                 console.log(JSON.stringify(postData, null, 4));
             });
 
-            $('#radius-spinner').spinner({
+
+            // ----- Wizard ----------------------------------------------------
+
+            $wizard.on('change', function(e, data) {
+                // console.log('change'); // TEMP
+                if(data.step === 3 && data.direction === 'next') {
+                    return e.preventDefault();
+                }
+            });
+            $wizard.on('changed', function(e, data) {
+                console.log('changed');
+            });
+            $wizard.on('finished', function(e, data) {
+                console.log('finished');
+            });
+            $wizard.on('stepclick', function(e, data) {
+                console.log('step' + data.step + ' clicked');
+                if(data.step === 1) {
+                    // return e.preventDefault();
+                }
+            });
+
+
+            // ----- Mapping view ----------------------------------------------
+
+            // // Maps
+            // var mapOptions = {
+            //     center: new google.maps.LatLng(39.7683800, -86.1580400),
+            //     zoom: 11
+            // };
+            // var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+            $radiusSpinner.spinner({
                 'value': 1,
                 'min': 1,
                 'max': 10
             });
 
-            $('#radius-spinner').on('changed', function (e, value) {
+            $radiusSpinner.on('changed', function (e, value) {
                 postData.map.radius = value;
                 console.log('Spinner changed: ', value); // TEMP
             });
@@ -64,43 +113,32 @@
 
 
 
-            // WIZARD
-            $('#wiz').on('change', function(e, data) {
-                console.log('change');
-                if(data.step === 3 && data.direction === 'next') {
-                    return e.preventDefault();
-                }
-            });
-            $('#wiz').on('changed', function(e, data) {
-                console.log('changed');
-            });
-            $('#wiz').on('finished', function(e, data) {
-                console.log('finished');
-            });
-            $('#btnWizardPrev').on('click', function() {
-                $('#wiz').wizard('previous');
-            });
-            $('#btnWizardNext').on('click', function() {
-                $('#wiz').wizard('next','foo');
-            });
-            $('#btnWizardStep').on('click', function() {
-                var item = $('#wiz').wizard('selectedItem');
-                console.log(item.step);
-            });
-            $('#wiz').on('stepclick', function(e, data) {
-                console.log('step' + data.step + ' clicked');
-                if(data.step === 1) {
-                    // return e.preventDefault();
-                }
+            // ----- Keywords view ----------------------------------
+
+            $addKeywordButton.on('click', function() {
+                var $inputField = $('#add-keyword-field');
+                var val = $inputField.val().trim();
+                $inputField.val('');
+                $keywordPillbox.pillbox('addItem', val, val);
             });
 
-
-            // Maps
-            var mapOptions = {
-                center: new google.maps.LatLng(39.7683800, -86.1580400),
-                zoom: 11
+            var showOrHideNoKeywords = function() {
+                var show = ($keywordPillbox.pillbox('items').length === 0) ? true : false;
+                if (show) {
+                    $noKeywordsStr.show();
+                } else {
+                    $noKeywordsStr.hide();
+                }
             };
-            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+            $keywordPillbox.on('added', function(event, value) {
+                postData.keywords.push(value.value);
+                showOrHideNoKeywords();
+            });
+            $keywordPillbox.on('removed', function(event, value) {
+                postData.keywords = _.without(postData.keywords, value.value);
+                showOrHideNoKeywords();
+            });
 
 
         });
@@ -122,8 +160,8 @@
                 <li data-target="#step3"><span class="badge">3</span>Confirmation<span class="chevron"></span></li>
             </ul>
             <div class="actions">
-                <button class="btn btn-mini btn-prev"> <i class="icon-arrow-left"></i>Prev</button>
-                <button class="btn btn-mini btn-next" data-last="Finish">Next<i class="icon-arrow-right"></i></button>
+                <button id="btnWizardPrev" class="btn btn-mini btn-prev"> <i class="icon-arrow-left"></i>Prev</button>
+                <button id="btnWizardNext" class="btn btn-mini btn-next" data-last="Finish">Next<i class="icon-arrow-right"></i></button>
             </div>
         </div>
         <div class="step-content">
@@ -135,10 +173,7 @@
                 </div>
 
                 <div class="map-sidebar well">
-
-
                     <div style="height: 40px;">
-
                         <div id="spinner-label" class="pull-left">
                             <label>Select Radius:</label>
                             <div id="label-desc">(value is in miles)</div>
@@ -163,7 +198,15 @@
 
             <!-- Keyword entry view -->
             <div class="step-pane" id="step2">
-                Enter Keywords
+                <div id="MyPillbox" class="pillbox">
+                    <div id="no-keywords">no keywords yet!</div>
+                    <ul>
+                    </ul>
+                </div>
+                <div id="add-keyword-label" class="pull-left">
+                    <input type="text" id="add-keyword-field">
+                    <button class="btn btn-primary" type="button">Add Keyword</button>
+                </div>
             </div>
 
 
@@ -173,9 +216,6 @@
             </div>
         </div>
 
-        <input type="button" class="btn btn-mini" id="btnWizardPrev" value="prev">
-        <input type="button" class="btn btn-mini" id="btnWizardNext" value="next">
-        <input type="button" class="btn btn-mini" id="btnWizardStep" value="current step">
         <input type="button" class="btn btn-mini" id="logPostData" value="log post data">
     </div>
 
