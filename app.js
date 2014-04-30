@@ -30,7 +30,7 @@ var APIKeys = {
 function tokenFromJWT( req, res, next ) {
     // Setup the signature for decoding the JWT
     var jwt = new JWT({appSignature: APIKeys.appSignature});
-    
+
     // Object representing the data in the JWT
     var jwtData = jwt.decode( req );
 
