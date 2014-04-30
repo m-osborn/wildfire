@@ -102,7 +102,10 @@
             };
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-
+            google.maps.event.addListener(map, 'click', function(event) { 
+                postData.map.latitude = event.latLng.lat();
+                postData.map.longitude = event.latLng.lng();
+            });
         });
     </script>
 
