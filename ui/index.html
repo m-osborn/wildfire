@@ -250,26 +250,23 @@
 
             <!-- Google Map view -->
             <div class="step-pane active" id="step1">
-
-                <div id="map-container" class="well google-maps clearfix">
+                <div id="map-container" class="google-maps clearfix">
                     <div id="map-canvas"></div>
                 </div>
-                <div id="controls-container">
+                <div id="map-controls">
                     <div class="pull-left">
                         <div id="search-address" class="input-append search">
-                            <input type="text" class="input-xxlarge" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
+                            <input type="text" placeholder="Search by Address" class="input-xxlarge"><button type="button" class="btn"><i class="icon-search"></i></button>
                         </div>
                     </div>
                     <div class="pull-right">
-                        <div id="spinner-label">
+                        <div id="spinner-label" class="pull-left">
                             <label>Select Radius:</label>
-                            <div id="label-desc">(value is in miles)</div>
+                            <div id="label-desc">(value in miles)</div>
                         </div>
-
-                        <div id="radius-spinner" class="spinner">
+                        <div id="radius-spinner" class="spinner pull-right">
                             <input type="text" class="input-mini spinner-input">
-
-                            <div class="spinner-buttons  btn-group btn-group-vertical">
+                            <div class="spinner-buttons btn-group btn-group-vertical">
                                 <button class="btn spinner-up">
                                     <i class="icon-chevron-up"></i>
                                 </button>
