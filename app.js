@@ -74,15 +74,18 @@ app.post('/logout', routes.logout );
 //Tmp route to see DB contents
 app.get('/geokeys', trigger.geokeys );
 
+
+
 // Custom Wildfire Twitter Activity Routes
-app.post('/ixn/activities/wildfire-twitter/save/', activity.save );
-app.post('/ixn/activities/wildfire-twitter/validate/', activity.validate );
-app.post('/ixn/activities/wildfire-twitter/publish/', activity.publish );
-app.post('/ixn/activities/wildfire-twitter/execute/', activity.execute );
+// app.post('/ixn/activities/wildfire-twitter/save/', activity.save );
+// app.post('/ixn/activities/wildfire-twitter/validate/', activity.validate );
+// app.post('/ixn/activities/wildfire-twitter/publish/', activity.publish );
+// app.post('/ixn/activities/wildfire-twitter/execute/', activity.execute );
 //app.post('/ixn/activities/wildfire-twitter/edit/', activity.edit );
 
 // Custom Wildfire Twitter Trigger Route
 app.post('/ixn/triggers/wildfire-twitter/', trigger.edit );
+app.post('/ixn/triggers/wildfire-twitter/update', trigger.update)
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
@@ -153,7 +156,7 @@ db.once('open', function callback() {
 
 
 //---------------------
-var mongoose = require('mongoose');
+// var          = require('mongoose');
 var gk       = require('../models/geokey');
 var Geokey   = mongoose.model('Geokey', GeokeySchema);
 
