@@ -1,26 +1,20 @@
 {
-  "name": "wildfire",
-  "version": "0.0.1",
-  "description": "JBDBC Wildfire Application",
-  "main": "server.js",
+  "name": "jbdbc-wildfire",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "server/bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.org:jkieffaber/wildfire.git"
-  },
-  "author": "Jenny Kieffaber",
-  "license": "BSD-2-Clause",
   "dependencies": {
-    "express": "~4.0.0",
-  },
-  "devDependencies": {
-    "nodemon": "~1.0.17"
+    "express": "3.4.8",
+    "fuel": "^0.4.1",
+    "jade": "^1.3.1",
+    "jwt-simple": "^0.2.0",
+    "newrelic": "^1.5.2",
+    "request": "^2.34.0",
+    "require": "^0.5.0"
   },
   "engines": {
-    "node": "~0.10.21",
-    "npm": "~1.3.11"
+    "node": "0.10.26"
   }
 }
