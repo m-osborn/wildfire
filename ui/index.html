@@ -35,7 +35,34 @@
 
         require(['jquery', 'fuelux/all'], function ($, fuelux) {
 
-            $('#radius-spinner').spinner();
+            var postData = {
+                map: {
+                    latitude: 39.7683800,
+                    longitude: -86.1580400,
+                    radius: 1
+                },
+                keywords: ''
+            };
+
+            // Prints the post data to the console
+            $('#logPostData').on('click', function() {
+                console.log(JSON.stringify(postData, null, 4));
+            });
+
+            $('#radius-spinner').spinner({
+                'value': 1,
+                'min': 1,
+                'max': 10
+            });
+
+            $('#radius-spinner').on('changed', function (e, value) {
+                postData.map.radius = value;
+                console.log('Spinner changed: ', value); // TEMP
+            });
+
+
+
+
 
             // WIZARD
             $('#wiz').on('change', function(e, data) {
@@ -109,18 +136,25 @@
 
                 <div class="map-sidebar well">
 
-                    Select Radius:
 
-                    <div id="radius-spinner" class="spinner">
-                        <input type="text" class="input-mini spinner-input">
+                    <div style="height: 40px;">
 
-                        <div class="spinner-buttons  btn-group btn-group-vertical">
-                            <button class="btn spinner-up">
-                                <i class="icon-chevron-up"></i>
-                            </button>
-                            <button class="btn spinner-down">
-                                <i class="icon-chevron-down"></i>
-                            </button>
+                        <div id="spinner-label" class="pull-left">
+                            <label>Select Radius:</label>
+                            <div id="label-desc">(value is in miles)</div>
+                        </div>
+
+                        <div id="radius-spinner" class="spinner pull-right">
+                            <input type="text" class="input-mini spinner-input">
+
+                            <div class="spinner-buttons  btn-group btn-group-vertical">
+                                <button class="btn spinner-up">
+                                    <i class="icon-chevron-up"></i>
+                                </button>
+                                <button class="btn spinner-down">
+                                    <i class="icon-chevron-down"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -142,6 +176,7 @@
         <input type="button" class="btn btn-mini" id="btnWizardPrev" value="prev">
         <input type="button" class="btn btn-mini" id="btnWizardNext" value="next">
         <input type="button" class="btn btn-mini" id="btnWizardStep" value="current step">
+        <input type="button" class="btn btn-mini" id="logPostData" value="log post data">
     </div>
 
 
