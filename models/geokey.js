@@ -9,4 +9,4 @@ var GeokeySchema = new Schema({
     keywords: Array,
 });
 
-module.exports = mongoose.model('Geokey', GeokeySchema);
+module.exports = mongoose.model('Geokeys', GeokeySchema);
