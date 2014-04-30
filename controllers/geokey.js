@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var gk       = require('../models/geokey');
+// var Geokey   = mongoose.model('Geokey', GeokeySchema);
 
 function queryDB (req, res) {
   // Let's find all the documents

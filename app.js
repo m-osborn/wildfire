@@ -152,11 +152,10 @@ db.once('open', function callback() {
 });
 
 
-
-
-//-----------------
+//---------------------
 var mongoose = require('mongoose');
 var gk       = require('../models/geokey');
+var Geokey   = mongoose.model('Geokey', GeokeySchema);
 
 function queryDB (req, res) {
   // Let's find all the documents
@@ -177,8 +176,6 @@ function queryDB (req, res) {
   });
 }
 
-
-
 // The rudimentary HTML content in three pieces.
 var html1 = '<title> hello-mongoose: MongoLab MongoDB Mongoose Node.js Demo on Heroku </title> \
 <head> \
@@ -196,5 +193,3 @@ var html4 = '<h2> Queried (name.last = "Doe", age >64) Documents in MonogoDB dat
 var html5 = '</code></pre> <br\> <i>';
 var html6 = ' documents. </i> <br\> <br\> \
 <br\> <br\> <center><i> Demo code available at <a href="http://github.com/mongolab/hello-mongoose">github.com</a> </i></center>';
-
-
