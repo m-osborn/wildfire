@@ -71,7 +71,7 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
-
+//Tmp route to see DB contents
 app.get('/geokeys', trigger.geokeys );
 
 // Custom Wildfire Twitter Activity Routes
@@ -140,13 +140,14 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
+
 // Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://localhost/wildfire')
+//mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://localhost/wildfire')
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
-  console.log("Connected to db");
+    console.log("Connected to db");
 });
 
