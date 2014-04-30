@@ -56,6 +56,7 @@
 
             var $searchAddress = $('#search-address');
             var $radiusSpinner = $('#radius-spinner');
+            var MAX_KEYWORDS = 10;
             var $keywordPillbox = $('#pillbox');
             var $noKeywordsStr = $('#no-keywords');
             var $addKeywordButton = $('#add-keyword-label button');
@@ -206,13 +207,15 @@
                 var $inputField = $('#add-keyword-field');
                 var val = $addKeywordField.val().trim();
 
-                var exists = _($keywordPillbox.pillbox('items')).find(function(item) {
-                    return item.value === val;
+                var count = $keywordPillbox.pillbox('itemCount');
+
+                var exists = _($keywordPillbox.pillbox('items')).find(function (item) {
+                    return item.value == val;
                 }) || false;
 
                 if (val !== '' && !exists) {
                     $keywordPillbox.pillbox('addItem', val, val);
-                    $keywordPillbox.find('li[data-value="' + val  + '"]').addClass(getColor());
+                    $keywordPillbox.find('li[data-value="' + val + '"]').addClass(getColor());
                 }
                 $inputField.val('');
             });
@@ -235,12 +238,22 @@
             };
 
             $keywordPillbox.on('added', function(event, value) {
+                var count = $keywordPillbox.pillbox('itemCount');
                 postData.keywords.push(value.value);
                 showOrHideNoKeywords();
+                if (count >= MAX_KEYWORDS) {
+                    $addKeywordButton.addClass('disabled');
+                    $addKeywordField.prop('disabled', true);
+                }
             });
             $keywordPillbox.on('removed', function(event, value) {
+                var count = $keywordPillbox.pillbox('itemCount');
                 postData.keywords = _.without(postData.keywords, value.value);
                 showOrHideNoKeywords();
+                if (count <= MAX_KEYWORDS) {
+                    $addKeywordButton.removeClass('disabled');
+                    $addKeywordField.prop('disabled', false);
+                }
             });
         });
     </script>

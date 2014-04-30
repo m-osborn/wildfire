@@ -75,6 +75,7 @@
 	padding: 20px;
 	height: 394px;
 	max-height: 394px;
+    overflow: auto;
 }
 
 .fuelux .pillbox li {
