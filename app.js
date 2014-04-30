@@ -10,6 +10,7 @@ var request     = require('request');
 var routes      = require('./routes');
 var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
+var geokey      = require('./controllers/geokey');
 var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
 
@@ -70,7 +71,8 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
-app.get('/geokeys/', routes.geokeys );
+
+app.get('/geokeys', geokey.queryDB );
 
 // Custom Wildfire Twitter Activity Routes
 app.post('/ixn/activities/wildfire-twitter/save/', activity.save );

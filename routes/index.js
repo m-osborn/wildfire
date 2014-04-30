@@ -28,8 +28,3 @@ exports.login = function( req, res ) {
 exports.logout = function( req, res ) {
     req.session.token = '';
 };
-
-exports.geokeys = function( req, res ) {
-    console.log( 'req.body: ', req.body );
-    res.redirect( '/geokeys' );
-};
