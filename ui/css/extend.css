@@ -91,6 +91,17 @@
 	font-weight: bold;
 }
 
+
+/* ==== CONFIRM VIEW ====================== */
+
+#locMap {
+	width: 400px;
+	height: 260px;
+}
+
+
+
+
 /* ==== BRAND COLORS ====================== */
 
 .fuelux .pillbox li.et-green {
