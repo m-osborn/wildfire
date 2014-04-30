@@ -126,7 +126,7 @@
             // ----- Mapping view ----------------------------------------------
 
             // Die Landkarte
-            var myLatlng = new google.maps.LatLng(39.7683800, -86.1580400)
+            var myLatlng = new google.maps.LatLng(39.7683800, -86.1580400);
             var mapOptions = {
                 center: myLatlng,
                 zoom: 11
@@ -135,6 +135,17 @@
             var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map
+            });
+
+            var circle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center: myLatlng,
+                radius: postData.map.radius*1609.34 //convert miles to meters
             });
 
             google.maps.event.addListener(map, 'click', function(event) {
@@ -151,6 +162,7 @@
 
             $radiusSpinner.on('changed', function (e, value) {
                 postData.map.radius = value;
+                circle.setRadius(value*1609.34); //convert miles to meters
                 console.log('Spinner changed: ', value); // TEMP
             });
 
@@ -224,21 +236,23 @@
 
             <!-- Google Map view -->
             <div class="step-pane active" id="step1">
-                <div id="map-container" class="well google-maps">
+
+                <div id="map-container" class="well google-maps clearfix">
                     <div id="map-canvas"></div>
                 </div>
-
-                <div class="map-sidebar well">
-                    <div style="height: 40px;">
+                <div id="controls-container">
+                    <div class="pull-left">
                         <div id="search-address" class="input-append search">
-                            <input type="text" class="input-medium" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
+                            <input type="text" class="input-xxlarge" placeholder="Search by Address"><button type="button" class="btn"><i class="icon-search"></i></button>
                         </div>
-                        <div id="spinner-label" class="pull-left">
+                    </div>
+                    <div class="pull-right">
+                        <div id="spinner-label">
                             <label>Select Radius:</label>
                             <div id="label-desc">(value is in miles)</div>
                         </div>
 
-                        <div id="radius-spinner" class="spinner pull-right">
+                        <div id="radius-spinner" class="spinner">
                             <input type="text" class="input-mini spinner-input">
 
                             <div class="spinner-buttons  btn-group btn-group-vertical">
@@ -251,7 +265,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
