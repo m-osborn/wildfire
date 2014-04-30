@@ -6,7 +6,7 @@
 	border: 1px solid #D4D4D4;
 	border-top: 0;
 	border-radius: 0 0 4px 4px;
-	height: 500px;
+	height: 442px;
 	padding: 10px;
 	margin-bottom: 10px;
 }
@@ -16,11 +16,14 @@
 /* ==== MAP VIEW ========================== */
 
 #map-container {
+	border: 1px solid #ddd;
+	margin-bottom: 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	width: 915px;
 	height: 400px;
-	width: 662px;
-	float: left;
-	padding: 0;
-	margin-bottom: 0px;
+	max-height: 400px;
 }
 
 #map-canvas {
@@ -38,6 +41,7 @@
 
 #spinner-label {
 	padding-top: 4px;
+	margin-right: 10px;
 }
 
 #spinner-label label {
@@ -47,8 +51,9 @@
 #spinner-label #label-desc {
 	font-size: 12px;
 	position: relative;
-	top: -8px;
+	top: -10px;
 	font-style: italic;
+	font-family: times;
 }
 
 
@@ -63,14 +68,13 @@
 
 .pillbox {
 	border: 1px solid #e2e2e2;
-	margin-bottom: 10px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	width: 910px;
 	padding: 20px;
-	height: 340px;
-	max-height: 340px;
+	height: 394px;
+	max-height: 394px;
 }
 
 .fuelux .pillbox li {
