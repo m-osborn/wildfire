@@ -140,13 +140,13 @@ mongoose.connect(MONGOHQ_URL);
 //mongoose.connect('mongodb://localhost/wildfire')
 
 var db       = mongoose.connection;
-var gk       = require('../models/geokey');
-var Geokey   = mongoose.model('Geokey', GeokeySchema);
+// var gk       = require('../models/geokey');
+// var Geokey   = mongoose.model('Geokey', GeokeySchema);
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback() {
-    console.log("Connected to db");
-});
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function callback() {
+//     console.log("Connected to db");
+// });
 
 // //GET geokeys from db
 // app.get('/geokeys', function(req, res) {
