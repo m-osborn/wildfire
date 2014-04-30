@@ -87,9 +87,20 @@
 	font-weight: bold;
 }
 
+/* ==== BRAND COLORS ====================== */
 
+.fuelux .pillbox li.et-green {
+    background-color: #7AB800;
+}
 
+.fuelux .pillbox li.et-purple {
+    background-color: #B382C7;
+}
 
+.fuelux .pillbox li.et-orange {
+    background-color: #FFA100;
+}
 
-
-
+.fuelux .pillbox li.et-blue {
+    background-color: #65CFE9;
+}

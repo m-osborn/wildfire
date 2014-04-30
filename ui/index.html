@@ -173,15 +173,29 @@
 
 
             // ----- Keywords view ----------------------------------
+            var COLOR_COUNTER = 0;
+
+            function getColor() {
+                var color_classes = ['et-green', 'et-purple', 'et-orange', 'et-blue'];
+                var color_class = color_classes[COLOR_COUNTER];
+
+                COLOR_COUNTER = (COLOR_COUNTER+1) % color_classes.length;
+                return color_class;
+            }
 
             $addKeywordButton.on('click', function() {
                 var $inputField = $('#add-keyword-field');
                 var val = $addKeywordField.val().trim();
 
-                if (val !== '') {
-                    $inputField.val('');
+                var exists = _($keywordPillbox.pillbox('items')).find(function(item) {
+                    return item.value === val;
+                }) || false;
+
+                if (val !== '' && !exists) {
                     $keywordPillbox.pillbox('addItem', val, val);
+                    $keywordPillbox.find('li[data-value="' + val  + '"]').addClass(getColor());
                 }
+                $inputField.val('');
             });
 
             $addKeywordField.on('keydown', function(event) {
