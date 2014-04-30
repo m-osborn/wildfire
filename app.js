@@ -70,6 +70,8 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
+app.get('/geokeys/', routes.geokeys );
+
 // Custom Wildfire Twitter Activity Routes
 app.post('/ixn/activities/wildfire-twitter/save/', activity.save );
 app.post('/ixn/activities/wildfire-twitter/validate/', activity.validate );
