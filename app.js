@@ -10,6 +10,8 @@ var request     = require('request');
 var routes      = require('./routes');
 var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
+var mongoose    = require('mongoose');
+var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
 
 var app = express();
 
@@ -133,3 +135,14 @@ app.get('/getActivityData', function( req, res ) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+// Mongodb to hold jb activity configs
+mongoose.connect(MONGOHQ_URL);
+// mongoose.connect('mongodb://localhost/wildfire')
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback() {
+  console.log("Connected to db");
+});
+
