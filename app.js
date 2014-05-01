@@ -28,8 +28,8 @@ var APIKeys = {
 
 
 //Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://127.0.0.1/wildfire');
+// mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://127.0.0.1/wildfire');
 
 var db = mongoose.connection;
 
