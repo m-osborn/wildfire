@@ -9,8 +9,8 @@ exports.create = function( req, res ){
     console.log( 'req.body: ', req.body );
 
     new Geokey({
-        map : tmp.map,
-        keywords: tmp.keywords
+        map : req.body.map,
+        keywords: req.body.keywords
     }).save(function( err, geokey, count ){
     res.send( 200, 'create' );
     });
