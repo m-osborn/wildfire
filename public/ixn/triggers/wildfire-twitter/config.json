@@ -23,7 +23,9 @@
                 "isNullable": false,
                 "defaultValue": ""
             }
-        ]
+        ],
+        "sendableCustomObjectField": "alternativeEmail",
+        "sendableSubscriberField": "_SubscriberKey"
     },
     "edit": {
         "uri": "index.html",

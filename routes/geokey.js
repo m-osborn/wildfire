@@ -1,20 +1,26 @@
-'use strict';
+// 'use strict';
 
-// POST Handler for / route of Geocode (this is the create route).
+// var mongoose = require('mongoose');
+// var gk       = require('../models/geokey');
+// var geokey   = mongoose.model('Geokey', gk);
 
-exports.create = function( req, res ) {
+// // POST Handler for / route of Geocode (this is the create route).
+// exports.create = function( req, res ){
 
-    console.log( 'req.body: ', req.body );
+//     console.log( 'req.body: ', req.body );
 
-    exports.geokeys_data.push({
-        maps: req.body.map,
-        keywords: req.body.keywords
-    });
+//     new geokey({
+//         map : req.body.map,
+//         keywords: req.body.keywords
 
-    new Geokey({
-        map : tmp.map,
-        keywords: tmp.keywords
-    }).save(function( err, geokey, count ){
-       res.send( 200, 'create' );
-    });
-};
+//     }).save(function(err){
+//       if (err) return handleError(err);
+//     });
+
+//     new Geokey({
+//         map : tmp.map,
+//         keywords: tmp.keywords
+//     }).save(function( err, geokey, count ){
+//        res.send( 200, 'create' );
+//     });
+// };
