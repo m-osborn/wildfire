@@ -10,13 +10,13 @@ exports.create = function( req, res ){
     console.log( 'req.body: ', req.body );
     console.log( 'inside routes.geokey.js create');
 
-    new geokey({
-        map : req.body.map,
-        keywords: req.body.keywords
+    // new geokey({
+    //     map : req.body.map,
+    //     keywords: req.body.keywords
 
-    }).save(function(err){
-      if (err) return handleError(err);
-    });
+    // }).save(function(err){
+    //   if (err) return handleError(err);
+    // });
 
     console.log( 'no errors!?');
 };
