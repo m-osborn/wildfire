@@ -25,7 +25,7 @@ exports.read = function (req, res){
     console.log( 'req.body: ', req.body );
     console.log( 'inside routes.geokey.js read ');
 
-    tmp = geokeyModel.find({}).exec(function(err, result) {
+    var tmp = geokeyModel.find({}).exec(function(err, result) {
       if (!err) return handleError(err);
     });
     console.log ('tmp:', tmp);
