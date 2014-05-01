@@ -7,7 +7,6 @@ var Geokey = require('../models/geokey');
 exports.create = function( req, res ){
 
     console.log( 'req.body: ', req.body );
-    console.log( 'in the routes.geokey.js');
 
     new Geokey({
         map : req.body.map,
@@ -15,4 +14,6 @@ exports.create = function( req, res ){
     }).save(function( err, geokey, count ){
     res.send( 200, 'Create' );
     });
+
+    console.log( 'past the GeoKey Model create');
 };
