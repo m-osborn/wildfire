@@ -8,7 +8,7 @@ var geokey   = mongoose.model('Geokey', gk);
 exports.create = function( req, res ){
 
     console.log( 'req.body: ', req.body );
-    console.log( 'inside routes.geokey.js ');
+    console.log( 'inside routes.geokey.js create');
 
     new geokey({
         map : req.body.map,
@@ -21,4 +21,12 @@ exports.create = function( req, res ){
     console.log( 'no errors!?');
 
 
+};
+
+exports.read = function (req, res){
+    console.log( 'req.body: ', req.body );
+    console.log( 'inside routes.geokey.js read ');
+
+    tmp = geokey.find()
+    console.log('tmp:   ', tmp)
 };
