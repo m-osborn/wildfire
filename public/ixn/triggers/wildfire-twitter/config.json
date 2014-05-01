@@ -10,7 +10,9 @@
     "dataExtension": {
         "fields": [
             {
-                "geokey_id": ""
+                "twitter_username": "",
+                "tweet": "",
+                "tweet_timestamp": ""
             }
         ]
     },

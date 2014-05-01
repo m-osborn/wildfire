@@ -15,6 +15,6 @@ exports.create = function( req, res ) {
         map : tmp.map,
         keywords: tmp.keywords
     }).save(function( err, geokey, count ){
-    res.send( 200, 'create' );
-});
+       res.send( 200, 'create' );
+    });
 };
