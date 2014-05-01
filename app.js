@@ -38,7 +38,7 @@ request.post('https://auth.exacttargetapis.com/v1/requestToken', {
     },
     function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            tokenData = JSON.parse(body);
+            var tokenData = JSON.parse(body);
             token = tokenData.accessToken;
         }
     }
