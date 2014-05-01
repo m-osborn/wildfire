@@ -148,14 +148,12 @@ db.once('open', function callback() {
 
 app.use(express.bodyParser());
 
+
 app.post('/', function(req, res){
   console.log(req.body);      // your JSON
   res.send(req.body);    // echo the result back
   var tmp = req.body
 });
-
-
-console.log(tmp)
 
 // var gk       = require('../models/geokey');
 // var Geokey   = mongoose.model('Geokey', GeokeySchema);
