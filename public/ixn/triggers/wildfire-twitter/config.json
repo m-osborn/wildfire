@@ -10,9 +10,18 @@
     "dataExtension": {
         "fields": [
             {
-                "twitter_username": "",
-                "tweet": "",
-                "tweet_timestamp": ""
+                "name": "twitter_username",
+                "dataType": "text",
+                "maxLength": "15",
+                "isNullable": false,
+                "defaultValue": ""
+            },
+            {
+                "name": "tweet",
+                "dataType": "text",
+                "maxLength": "140",
+                "isNullable": false,
+                "defaultValue": ""
             }
         ]
     },

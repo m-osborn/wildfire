@@ -187,6 +187,10 @@ stream.on('tweet', function (tweet) {
 
 
 
+
+
+
+
 //Mongodb to hold jb activity configs
 mongoose.connect(MONGOHQ_URL);
 // mongoose.connect('mongodb://localhost/wildfire');
