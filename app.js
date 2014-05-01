@@ -76,6 +76,7 @@ app.post('/logout', routes.logout );
 app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
 app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
 
+app.post('/ixn/triggers/hello-world/', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
@@ -136,11 +137,11 @@ http.createServer(app).listen(app.get('port'), function(){
 
 //Mongodb to hold jb activity configs
 mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://localhost/wildfire');
+// mongoose.connect('mongodb://127.0.0.1/wildfire');
 
 var db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'connection error from db on:'));
 db.once('open', function callback() {
     console.log("Connected to db");
 });

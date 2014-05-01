@@ -7,6 +7,6 @@ var geokeySchema = new Schema({
             radius:    { type: Number, default: 1 }
           },
     keywords: Array,
-});
+}, { collection : 'Geokey' });
 
 module.exports = mongoose.model('Geokey', geokeySchema);
