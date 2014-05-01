@@ -12,8 +12,9 @@ var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
 var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
-var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10086/app24707022';
+var MONGOHQ_URL = 'mongodb://wild:fire@oceanic.mongohq.com:10086/app24707022';
 var app         = express();
+
 
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
@@ -70,9 +71,11 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
+
 // Custom Wildfire Twitter Trigger Route
 app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
 app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
+
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
@@ -131,7 +134,6 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
-var GeoKey = require('./models/geokey');
 //Mongodb to hold jb activity configs
 mongoose.connect(MONGOHQ_URL);
 // mongoose.connect('mongodb://localhost/wildfire');
