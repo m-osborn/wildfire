@@ -44,19 +44,31 @@ request.post('https://auth.exacttargetapis.com/v1/requestToken', {
     }
 );
 
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
 
 //Mongodb to hold jb activity configs
 // mongoose.connect(MONGOHQ_URL);
-mongoose.connect('mongodb://127.0.0.1/wildfire');
+// mongoose.connect('mongodb://127.0.0.1/wildfire');
 
-var db = mongoose.connection;
-//console.log("db: ", db.collections);
+// var db = mongoose.connection;
+// //console.log("db: ", db.collections);
 
 
-db.on('error', console.error.bind(console, 'error from db on:'));
-db.once('open', function callback() {
-    console.log("Connected to db");
-});
+// db.on('error', console.error.bind(console, 'error from db on:'));
+// db.once('open', function callback() {
+//     console.log("Connected to db");
+// });
 
 var t = new twitter({
     consumer_key        : 'VMZOp5qIcU0Ee8lQGvOj8iIoQ',
@@ -254,7 +266,7 @@ app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
     // console.log('map_data', map_data);
     // console.log('kw_data', kw_data);
 
-    
+
     res.send( 200, 'Edit' );
 });
 
