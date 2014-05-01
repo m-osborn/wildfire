@@ -233,24 +233,29 @@ http.createServer(app).listen(app.get('port'), function(){
 
 app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
     //String parsing
-    var tmp = req.body;
-    console.log(tmp);
-    var map_data = tmp.map;
-    var kw_data = tmp.keywords;
+    // var tmp = req.body;
+    // console.log(tmp);
+    // var map_data = tmp.map;
+    // var kw_data = tmp.keywords;
 
-    var filename = './tmp/the_data.txt';
+    // var filename = './tmp/the_data.txt';
+    // var to_write = [];
+    // '{ map : ', map_data, ', keywords : ', kw_data, '}';
 
-    console.logger
-    fs.writeFile(filename, "'{ map : ', 'map_data', ', keywords : ', 'kw_data', '}'", function(err){
-        if(err){
-            console.log(err);
-        }else{
-            console.log("file was written");
-        }
-    });
+    // console.logger
+    // fs.writeFile(filename, to_write, function(err){
+    //     if(err){
+    //         console.log(err);
+    //     }else{
+    //         console.log("file was written");
+    //     }
+    // });
 
-    console.log('map_data', map_data);
-    console.log('kw_data', kw_data);
+    // console.log('map_data', map_data);
+    // console.log('kw_data', kw_data);
+
+    
+    res.send( 200, 'Edit' );
 });
 
 
