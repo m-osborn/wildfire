@@ -157,16 +157,16 @@ app.post('/', function(req, res){
 
 console.log(tmp)
 
-var gk       = require('../models/geokey');
-var Geokey   = mongoose.model('Geokey', GeokeySchema);
-//GET geokeys from db
-app.get('/geokeys', function(req, res) {
-  // Let's find all the documents
-  Geokey.find({}, function (err, users) {
-        var geokeymap = {};
-        geokeys.forEach(function(geokey) {
-              geokeymap[geokey._id] = geokey;
-        },
-        res.send(geokeymap);  
-   });
-});
+// var gk       = require('../models/geokey');
+// var Geokey   = mongoose.model('Geokey', GeokeySchema);
+
+// app.get('/geokeys', function(req, res) {
+//   // Let's find all the documents
+//   Geokey.find({}, function (err, users) {
+//         var geokeymap = {};
+//         geokeys.forEach(function(geokey) {
+//               geokeymap[geokey._id] = geokey;
+//         },
+//         res.send(geokeymap);  
+//    });
+// });
