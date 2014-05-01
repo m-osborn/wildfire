@@ -12,12 +12,15 @@ var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
 var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
-var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
-
-// var app = express();
+var MONGOHQ_URL = 'mongodb://wild:fire@oceanic.mongohq.com:10086/app24707022';
+var app         = express();
+var fs          = require('fs');
+var $           = require('jquery');
+var twitter     = require('twit');
+var geopoint    = require('geopoint');
 
 // Register configs for the environments where the app functions
-// , these can be stored in a separate file using a module like config
+// these can be stored in a separate file using a module like config
 var APIKeys = {
     appId           : '6f783347-80e8-46c5-9b57-3d4fd2be92b8',
     clientId        : '3vj2rwufbdt6v95cmur6z4t2',
@@ -43,22 +46,37 @@ request.post('https://auth.exacttargetapis.com/v1/requestToken', {
 );
 
 
-// Simple custom middleware
-function tokenFromJWT( req, res, next ) {
-    // Setup the signature for decoding the JWT
-    var jwt = new JWT({appSignature: APIKeys.appSignature});
+//Mongodb to hold jb activity configs
+// mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://127.0.0.1/wildfire');
 
-    // Object representing the data in the JWT
-    var jwtData = jwt.decode( req );
+var db = mongoose.connection;
+//console.log("db: ", db.collections);
 
-    // Bolt the data we need to make this call onto the session.
-    // Since the UI for this app is only used as a management console,
-    // we can get away with this. Otherwise, you should use a
-    // persistent storage system and manage tokens properly with
-    // node-fuel
-    req.session.token = token;
-    next();
-}
+
+db.on('error', console.error.bind(console, 'error from db on:'));
+db.once('open', function callback() {
+    console.log("Connected to db");
+});
+
+
+var t = new twitter({
+    consumer_key        : 'VMZOp5qIcU0Ee8lQGvOj8iIoQ',
+    consumer_secret     : 'Faw7MMpBl4chofoE7HPQzWOq48CJ1OiQdRrLX7obWgU7coTnU2',
+    access_token        : '16829624-Vy7AyEI2CwuT2xbwZnkdNfyKXSix5xNmmkdCnsAuF',
+    access_token_secret : 'Y23cmSR8X5OrUjWTJTyZGj6GzaRheCEq51OXncDJLI8Ae'
+});
+
+var theCircle = new geopoint(39.7683800, -86.1580400);
+var theCircleBox = theCircle.boundingCoordinates(1);
+var theCircleSquare = [theCircleBox[0]._degLon, theCircleBox[0]._degLat, theCircleBox[1]._degLon, theCircleBox[1]._degLat];
+
+var tweetKeywords = ['ExactTarget', '#jbdbc', 'hackathon'];
+
+
+var app = express();
+var db = mongoose.connection;
+
 
 // Use the cookie-based session middleware
 app.use(express.cookieParser());
@@ -77,20 +95,48 @@ app.use(express.methodOverride());
 app.use(express.favicon());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.bodyParser());
 
 // Express in Development Mode
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+
+// Simple custom middleware
+function tokenFromJWT( req, res, next ) {
+    // Setup the signature for decoding the JWT
+    var jwt = new JWT({appSignature: APIKeys.appSignature});
+
+    // Object representing the data in the JWT
+    var jwtData = jwt.decode( req );
+
+    // Bolt the data we need to make this call onto the session.
+    // Since the UI for this app is only used as a management console,
+    // we can get away with this. Otherwise, you should use a
+    // persistent storage system and manage tokens properly with
+    // node-fuel
+    req.session.token = token;
+    next();
+}
+
+
 // HubExchange Routes
 app.get('/', routes.index );
+app.post('/', function(req, res){
+    console.log(req.body);      // your JSON
+    res.send(req.body);    // echo the result back
+    var tmp = req.body
+});
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
+
 // Custom Wildfire Twitter Trigger Route
-app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
-// app.get('/ixn/triggers/wildfire-twitter/', geokey.index);
+// app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
+// app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
+
+app.post('/ixn/triggers/wildfire-twitter/edit', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
@@ -107,7 +153,7 @@ app.post('/fireEvent/:type', function( req, res ) {
             url: JB_EVENT_API,
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + req.session.token
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
                 ContactKey: data.alternativeEmail,
@@ -144,19 +190,71 @@ app.get('/getActivityData', function( req, res ) {
   }
 });
 
+
+
+// ===== Twitter stream stuff =======================================
+
+var stream = t.stream('statuses/filter', {
+    locations: theCircleSquare
+});
+
+stream.on('tweet', function (tweet) {
+    var t = tweet.text.toLowerCase();
+    var matchingTweet = false;
+    var counter = 0;
+
+    while((counter < tweetKeywords.length) && (matchingTweet === false)) {
+        if (t.indexOf(tweetKeywords[counter].trim()) > -1) {
+            matchingTweet = true;
+        }
+        counter++;
+    };
+
+    if (matchingTweet) {
+        console.log("matching tweet: ", tweet.text)
+    } else {
+        console.log("regular tweet: ", tweet.text);
+    }
+});
+
+// //Mongodb to hold jb activity configs
+// mongoose.connect(MONGOHQ_URL);
+// // mongoose.connect('mongodb://localhost/wildfire');
+
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function callback() {
+//     // Start serving only after connecting to Mongo.
+//     app.listen(3000);
+//     console.log('Express server listening on port ' + app.get('port'));
+// });
+
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
+app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
+    var tmp2 = req.body;
+    // var tmp = $.parseJSON(tmp2);
 
-//Mongodb to hold jb activity configs
-// mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://localhost/wildfire');
+    console.log(tmp2);
 
-var db = mongoose.connection;
+    var map_data = tmp2.map;
+    var kw_data = tmp2.keywords;
 
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function callback() {
-    // console.log("Connected to db");
-// });
+    // console.log(tmp);
+    // console.log(tmp.map);
+
+    fs.writeFile('/tmp/test.txt','{ map : ', map_data, ', keywords : ', kw_data, '}', function(err){
+        if(err){
+            console.log(err);
+        }else{
+            console.log("file was written");
+        }
+    });
+
+    console.log('map_data', map_data);
+    console.log('kw_data', kw_data);
+});
+
 

@@ -28,7 +28,7 @@ define( function( require ) {
         */
         var value = $oes.val();
         if( !value ) {
-            // Notify user they need to select a value 
+            // Notify user they need to select a value
             $('#wildfireTwitterTriggerConfigError').html('<strong style="color: red;">You must enter something</strong>');
         } else {
             // Successful change
@@ -43,7 +43,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='03461c53-cccf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.originEventStart + "]]></Value></Condition></ConditionSet></FilterDefinition>"
+                filter: ""; // <FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='03461c53-cccf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.originEventStart + "]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
