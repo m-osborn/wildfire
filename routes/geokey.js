@@ -19,9 +19,9 @@ exports.create = function( req, res ){
     });
 
     console.log( 'no errors!?');
-
-
 };
+
+console.log('outside of exports.create');
 
 exports.read = function (req, res){
     console.log( 'req.body: ', req.body );
