@@ -4,7 +4,7 @@ var mongoose    = require('mongoose');
 var gk          = require('../models/geokey');
 var geokeyModel = mongoose.model('Geokey', gk);
 
-// POST Handler for / route of Geocode (this is the create route).
+// POST Handler for / route of Geocode
 exports.create = function( req, res ){
 
     console.log( 'req.body: ', req.body );
@@ -25,7 +25,7 @@ exports.read = function (req, res){
     console.log( 'req.body: ', req.body );
     console.log( 'inside routes.geokey.js read ');
 
-    tmp = geokey.find({}).exec(function(err, result) {
+    tmp = geokeyModel.find({}).exec(function(err, result) {
       if (!err) return handleError(err);
     });
     console.log ('tmp:', tmp);
