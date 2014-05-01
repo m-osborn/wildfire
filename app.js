@@ -71,12 +71,9 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
-//Tmp route to see DB contents
-// app.post('/geokeys', trigger.geokeys );
-
 // Custom Wildfire Twitter Trigger Route
-app.post('/ixn/triggers/wildfire-twitter/', trigger.edit );
-// app.post('/ixn/triggers/wildfire-twitter/update', trigger.update)
+app.post('/ixn/triggers/wildfire-twitter/', geokey.create );
+// app.get('/ixn/triggers/wildfire-twitter/', geokey.index);
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
