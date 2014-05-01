@@ -23,7 +23,6 @@ exports.create = function( req, res ){
 };
 
 exports.read = function (req, res){
-    console.log( 'req.body: ', req.body );
     console.log( 'inside routes.geokey.js read ');
 
 
