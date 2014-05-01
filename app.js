@@ -72,7 +72,7 @@ app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
 // Custom Wildfire Twitter Trigger Route
-app.post('/ixn/triggers/wildfire-twitter/', geokey.create );
+app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
 // app.get('/ixn/triggers/wildfire-twitter/', geokey.index);
 
 // Abstract Event Handler
