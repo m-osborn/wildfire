@@ -14,7 +14,7 @@ var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
 
-var app = express();
+// var app = express();
 
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
@@ -25,6 +25,23 @@ var APIKeys = {
     appSignature    : 'who1x3cac1cl3jltjbswy4fqn4hq0khoa5dpddhxqjvljou1hbwa41q2xew1ryuuehn310ujdij1my0xj1mcxnijp3f345rrrodpmeywdcqrsumplk5aqbtamnf011qz2t4kqxeukacrbqqxexwre2ttihom3f2i1c5stgrtyofq2dji1jovyz5jrld5iomoo2lxjjrpy5aj0b1tsyftzcnm2rb3mmhx3ot53ojd1sdoy5haxt1sktgofbwvzk2',
     authUrl         : 'https://auth.exacttargetapis.com/v1/requestToken?legacy=1'
 };
+
+var token = '';
+
+request.post('https://auth.exacttargetapis.com/v1/requestToken', {
+        form: {
+            clientId: APIKeys.clientId,
+            clientSecret: APIKeys.clientSecret
+        }
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            tokenData = JSON.parse(body);
+            token = tokenData.accessToken;
+        }
+    }
+);
+
 
 // Simple custom middleware
 function tokenFromJWT( req, res, next ) {
@@ -39,7 +56,7 @@ function tokenFromJWT( req, res, next ) {
     // we can get away with this. Otherwise, you should use a
     // persistent storage system and manage tokens properly with
     // node-fuel
-    req.session.token = jwtData.token;
+    req.session.token = token;
     next();
 }
 
@@ -133,13 +150,13 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 //Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
+// mongoose.connect(MONGOHQ_URL);
 // mongoose.connect('mongodb://localhost/wildfire');
 
 var db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback() {
-    console.log("Connected to db");
-});
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function callback() {
+    // console.log("Connected to db");
+// });
 
