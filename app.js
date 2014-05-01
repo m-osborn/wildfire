@@ -143,28 +143,3 @@ db.once('open', function callback() {
     console.log("Connected to db");
 });
 
-app.use(express.bodyParser());
-
-
-app.post('/', function(req, res){
-  console.log(req.body);      // your JSON
-  res.send(req.body);    // echo the result back
-  var tmp = req.body
-});
-
-
-
-
-// var gk       = require('../models/geokey');
-// var Geokey   = mongoose.model('Geokey', GeokeySchema);
-
-// app.get('/geokeys', function(req, res) {
-//   // Let's find all the documents
-//   Geokey.find({}, function (err, users) {
-//         var geokeymap = {};
-//         geokeys.forEach(function(geokey) {
-//               geokeymap[geokey._id] = geokey;
-//         },
-//         res.send(geokeymap);  
-//    });
-// });
