@@ -74,8 +74,6 @@ app.post('/logout', routes.logout );
 app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
 app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
 
-// app.get('/ixn/triggers/wildfire-twitter/', geokey.index);
-
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
     var data = req.body;
@@ -133,6 +131,7 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+var GeoKey = require('./models/geokey');
 //Mongodb to hold jb activity configs
 mongoose.connect(MONGOHQ_URL);
 // mongoose.connect('mongodb://localhost/wildfire');
