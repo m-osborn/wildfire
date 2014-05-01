@@ -1,5 +1,4 @@
-'use strict';
-
+// 'use strict';
 // var mongoose    = require('mongoose');
 // var gk          = require('../models/geokey');
 // var Geokey      = mongoose.model('Geokey', gk);
@@ -45,4 +44,3 @@
 //       }
 //     });
 //     res.send( 200, 'Read' );
-// };
