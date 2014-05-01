@@ -221,14 +221,12 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
+    //String parsing
     var tmp2 = req.body;
-
     var tmp3 = Object.keys(tmp2)[0];
-
-    console.log(tmp3);
-
-    var map_data = tmp2.map;
-    var kw_data = tmp2.keywords;
+    var tmp3_parsed = JSON.parse(tmp3);
+    var map_data = tmp3_parsed.map;
+    var kw_data = tmp3_parsed.keywords;
 
 
     fs.writeFile('/tmp/test.txt','{ map : ', map_data, ', keywords : ', kw_data, '}', function(err){
