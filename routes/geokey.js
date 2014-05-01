@@ -25,11 +25,12 @@ exports.create = function( req, res ){
 exports.read = function (req, res){
     console.log( 'req.body: ', req.body );
     console.log( 'inside routes.geokey.js read ');
-    console.log( 'Geokey: ', Geokey)
+
 
     Geokey.find(function(err, geokeys) {
       if (!err) {
         res.json(geokey)
+        console.log(geokey)
       } else {
         console.log(err);
       }

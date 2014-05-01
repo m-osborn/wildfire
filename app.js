@@ -26,6 +26,18 @@ var APIKeys = {
     authUrl         : 'https://auth.exacttargetapis.com/v1/requestToken?legacy=1'
 };
 
+
+//Mongodb to hold jb activity configs
+mongoose.connect(MONGOHQ_URL);
+// mongoose.connect('mongodb://127.0.0.1/wildfire');
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error from db on:'));
+db.once('open', function callback() {
+    console.log("Connected to db");
+});
+
 // Simple custom middleware
 function tokenFromJWT( req, res, next ) {
     // Setup the signature for decoding the JWT
@@ -132,17 +144,5 @@ app.get('/getActivityData', function( req, res ) {
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
-});
-
-
-//Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://127.0.0.1/wildfire');
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error from db on:'));
-db.once('open', function callback() {
-    console.log("Connected to db");
 });
 
