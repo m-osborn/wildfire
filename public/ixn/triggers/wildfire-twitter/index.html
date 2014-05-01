@@ -246,9 +246,6 @@
                 if (val !== '' && !exists) {
                     $keywordPillbox.pillbox('addItem', val, val);
                     $keywordPillbox.find('li[data-value="' + val + '"]').addClass(getColor());
-                    if($('#btnWizardNext').prop('disabled') === true) {
-                        $('#btnWizardNext').prop('disabled', false);
-                    }
                 }
                 $inputField.val('');
             });
@@ -277,6 +274,11 @@
                     $addKeywordField.prop('disabled', true);
                     $('#add-keyword-label').after('<div id=\'keyword-limit-message\' class=\'pull-right\'>Limit of 10 keywords has been reached!</div>');
                 }
+                if(count > 0) {
+                    if($('#btnWizardNext').prop('disabled') === true) {
+                        $('#btnWizardNext').prop('disabled', false);
+                    }
+                }
             });
             $keywordPillbox.on('removed', function(event, value) {
                 var count = $keywordPillbox.pillbox('itemCount');
@@ -288,6 +290,11 @@
                     $('#keyword-limit-message').fadeOut(300, function () {
                         $('#keyword-limit-message').remove();
                     });
+                }
+                if(count === 0) {
+                    if($('#btnWizardNext').prop('disabled') === false) {
+                        $('#btnWizardNext').prop('disabled', true);
+                    }
                 }
             });
 
