@@ -1,5 +1,7 @@
 'use strict';
 
+var Geokey = require('../models/geokey');
+
 // POST Handler for / route of Geocode (this is the create route).
 
 exports.create = function( req, res ){
