@@ -10,7 +10,7 @@ var request     = require('request');
 var routes      = require('./routes');
 var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
-var geokey      = require('./controllers/geokey');
+var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10031/app24138460';
 
