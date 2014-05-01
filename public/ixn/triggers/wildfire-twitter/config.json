@@ -10,9 +10,13 @@
     "dataExtension": {
         "fields": [
             {
-                "geokey_id": ""
+                "geokey_id": "",
+                "map": "",
+                "keywords": ""
             }
-        ]
+        ],
+        "sendableCustomObjectField": "alternativeEmail",
+        "sendableSubscriberField": "_SubscriberKey"
     },
     "edit": {
         "uri": "index.html",
