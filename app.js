@@ -46,6 +46,7 @@ db.once('open', function callback() {
 function tokenFromJWT( req, res, next ) {
     // Setup the signature for decoding the JWT
     var jwt = new JWT({appSignature: APIKeys.appSignature});
+}
 
 var t = new twitter({
     consumer_key        : 'VMZOp5qIcU0Ee8lQGvOj8iIoQ',
@@ -113,7 +114,7 @@ app.get('/', routes.index );
 app.post('/', function(req, res){
     console.log(req.body);      // your JSON
     res.send(req.body);    // echo the result back
-    var tmp = req.body
+    var tmp = req.body;
 });
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
@@ -197,11 +198,11 @@ stream.on('tweet', function (tweet) {
         counter++;
     };
 
-    if (matchingTweet) {
-        console.log("matching tweet: ", tweet.text)
-    } else {
-        console.log("regular tweet: ", tweet.text);
-    }
+    // if (matchingTweet) {
+    //     console.log("matching tweet: ", tweet.text);
+    // } else {
+    //     console.log("regular tweet: ", tweet.text);
+    // }
 });
 
 // //Mongodb to hold jb activity configs
@@ -222,15 +223,14 @@ http.createServer(app).listen(app.get('port'), function(){
 
 app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
     var tmp2 = req.body;
-    // var tmp = $.parseJSON(tmp2);
 
-    console.log(tmp2);
+    var tmp3 = Object.keys(tmp2)[0];
+
+    console.log(tmp3);
 
     var map_data = tmp2.map;
     var kw_data = tmp2.keywords;
 
-    // console.log(tmp);
-    // console.log(tmp.map);
 
     fs.writeFile('/tmp/test.txt','{ map : ', map_data, ', keywords : ', kw_data, '}', function(err){
         if(err){
@@ -239,8 +239,7 @@ app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
             console.log("file was written");
         }
     });
-    
     console.log('map_data', map_data);
-    console.log('kw_data', kw_data)
+    console.log('kw_data', kw_data);
 });
 
