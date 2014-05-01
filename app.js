@@ -13,7 +13,7 @@ var trigger     = require('./routes/trigger');
 var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wildfire:Spre@d5@oceanic.mongohq.com:10086/app24707022';
-var app = express();
+var app         = express();
 
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
