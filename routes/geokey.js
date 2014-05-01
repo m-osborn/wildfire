@@ -28,8 +28,8 @@ exports.read = function (req, res){
 
     Geokey.find(function(err, geokeys) {
       if (!err) {
-        res.json(geokey)
-        console.log(geokey)
+        res.json(geokeys)
+        console.log(geokeys)
       } else {
         console.log('error in Geokey.find():', err);
       }
