@@ -7,9 +7,10 @@
 exports.create = function( req, res ) {
     console.log( 'req.body: ', req.body );
     
-    var tmp = JSON.parse (req.body)
+    var tmp = JSON.parse (req.body);
 
-    console.log( 'tmp',tmp)
+    console.log( 'tmp',tmp);
+    console.debug('tmp', tmp);
 
     new Geokey({
         map : tmp.map,
