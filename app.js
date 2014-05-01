@@ -133,8 +133,8 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 //Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://localhost/wildfire')
+// mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://localhost/wildfire');
 
 var db = mongoose.connection;
 
