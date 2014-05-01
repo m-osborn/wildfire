@@ -15,7 +15,6 @@ var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wild:fire@oceanic.mongohq.com:10086/app24707022';
 var app         = express();
 var fs          = require('fs');
-var $           = require('jquery');
 var twitter     = require('twit');
 var geopoint    = require('geopoint');
 
