@@ -76,7 +76,7 @@ app.post('/logout', routes.logout );
 app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
 app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
 
-app.post('/ixn/triggers/hello-world/', trigger.edit );
+app.post('/ixn/triggers/wildfire-twitter/edit', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
