@@ -136,18 +136,26 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 //Mongodb to hold jb activity configs
-mongoose.connect(MONGOHQ_URL);
-// mongoose.connect('mongodb://localhost/wildfire')
+// mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://localhost/wildfire')
 
-var db       = mongoose.connection;
-// var gk       = require('../models/geokey');
-// var Geokey   = mongoose.model('Geokey', GeokeySchema);
+var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
     console.log("Connected to db");
 });
 
+app.use(express.bodyParser());
+
+app.post('/', function(req, res){
+  console.log(req.body);      // your JSON
+  res.send(req.body);    // echo the result back
+});
+
+
+// var gk       = require('../models/geokey');
+// var Geokey   = mongoose.model('Geokey', GeokeySchema);
 // //GET geokeys from db
 // app.get('/geokeys', function(req, res) {
 //   // Let's find all the documents
