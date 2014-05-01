@@ -12,12 +12,9 @@ exports.create = function( req, res ){
     new geokey({
         map : req.body.map,
         keywords: req.body.keywords
-    }).save(function( err, geokey, count ){
-    res.send( 200, 'Create' );
+
+    }).save(function(err){
+      if (err) return handleError(err);
     });
 
-    console.log('req.body.map: ', req.body.map);
-    console.log('req.body.keywords: ', req.body.keywords);
 };
-
-
