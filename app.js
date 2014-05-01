@@ -241,7 +241,7 @@ app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
     var filename = '/tmp/the_data.txt';
 
     console.logger
-    fs.writeFile(filename,'{ map : ', 'map_data', ', keywords : ', 'kw_data', '}', function(err){
+    fs.writeFile(filename, "'{ map : ', 'map_data', ', keywords : ', 'kw_data', '}'", function(err){
         if(err){
             console.log(err);
         }else{
