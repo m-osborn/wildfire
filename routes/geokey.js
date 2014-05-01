@@ -32,7 +32,7 @@ exports.read = function (req, res){
         res.json(geokey)
         console.log(geokey)
       } else {
-        console.log(err);
+        console.log('error in Geokey.find():', err);
       }
     });
     res.send( 200, 'Read' );
