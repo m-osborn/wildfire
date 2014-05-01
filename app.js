@@ -28,6 +28,23 @@ var APIKeys = {
     authUrl         : 'https://auth.exacttargetapis.com/v1/requestToken?legacy=1'
 };
 
+var token = '';
+
+request.post('https://auth.exacttargetapis.com/v1/requestToken', {
+        form: {
+            clientId: APIKeys.clientId,
+            clientSecret: APIKeys.clientSecret
+        }
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            tokenData = JSON.parse(body);
+            token = tokenData.accessToken;
+        }
+    }
+);
+
+
 //Mongodb to hold jb activity configs
 // mongoose.connect(MONGOHQ_URL);
 mongoose.connect('mongodb://127.0.0.1/wildfire');
@@ -40,12 +57,6 @@ db.on('error', console.error.bind(console, 'error from db on:'));
 db.once('open', function callback() {
     console.log("Connected to db");
 });
-
-// Simple custom middleware
-function tokenFromJWT( req, res, next ) {
-    // Setup the signature for decoding the JWT
-    var jwt = new JWT({appSignature: APIKeys.appSignature});
-}
 
 var t = new twitter({
     consumer_key        : 'VMZOp5qIcU0Ee8lQGvOj8iIoQ',
@@ -103,7 +114,7 @@ function tokenFromJWT( req, res, next ) {
     // we can get away with this. Otherwise, you should use a
     // persistent storage system and manage tokens properly with
     // node-fuel
-    req.session.token = jwtData.token;
+    req.session.token = token;
     next();
 }
 
@@ -140,7 +151,7 @@ app.post('/fireEvent/:type', function( req, res ) {
             url: JB_EVENT_API,
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + req.session.token
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
                 ContactKey: data.alternativeEmail,
@@ -239,4 +250,5 @@ app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
     console.log('map_data', map_data);
     console.log('kw_data', kw_data);
 });
+
 
