@@ -136,8 +136,14 @@
                     return e.preventDefault();
                 }
             });
-            // $wizard.on('changed', function(e, data) {
-            // });
+
+            //disable next step if no keywords
+            $wizard.on('changed', function(e, data) {
+                if($wizard.wizard('selectedItem').step === 2 && $keywordPillbox.pillbox('itemCount') === 0) {
+                    $('#btnWizardNext').prop('disabled', true);
+                }
+            });
+
             $wizard.on('finished', function(e, data) {
                 console.log('finished'); // TEMP
             });
@@ -240,6 +246,9 @@
                 if (val !== '' && !exists) {
                     $keywordPillbox.pillbox('addItem', val, val);
                     $keywordPillbox.find('li[data-value="' + val + '"]').addClass(getColor());
+                    if($('#btnWizardNext').prop('disabled') === true) {
+                        $('#btnWizardNext').prop('disabled', false);
+                    }
                 }
                 $inputField.val('');
             });
