@@ -1,9 +1,10 @@
 'use strict';
 
-var Geokey = require('../models/geokey');
+var mongoose = require('mongoose');
+// var gk       = require('../models/geokey');
+var geokey   = mongoose.model('Geokey', GeokeySchema);
 
 // POST Handler for / route of Geocode (this is the create route).
-
 exports.create = function( req, res ){
 
     console.log( 'req.body: ', req.body );
@@ -15,5 +16,8 @@ exports.create = function( req, res ){
     res.send( 200, 'Create' );
     });
 
-    console.log( 'past the GeoKey Model create');
+    console.log('req.body.map: ', req.body.map);
+    console.log('req.body.keywords: ', req.body.keywords);
 };
+
+
