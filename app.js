@@ -14,7 +14,8 @@ var geokey      = require('./routes/geokey');
 var mongoose    = require('mongoose');
 var MONGOHQ_URL = 'mongodb://wild:fire@oceanic.mongohq.com:10086/app24707022';
 var app         = express();
-
+var fs          = require('fs');
+var $           = require('jquery');
 
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
@@ -28,12 +29,14 @@ var APIKeys = {
 
 
 //Mongodb to hold jb activity configs
-mongoose.connect(process.env.MONGOHQ_URL);
-// mongoose.connect('mongodb://127.0.0.1/wildfire');
+// mongoose.connect(MONGOHQ_URL);
+mongoose.connect('mongodb://127.0.0.1/wildfire');
 
 var db = mongoose.connection;
+//console.log("db: ", db.collections);
 
-db.on('error', console.error.bind(console, 'connection error from db on:'));
+
+db.on('error', console.error.bind(console, 'error from db on:'));
 db.once('open', function callback() {
     console.log("Connected to db");
 });
@@ -85,8 +88,8 @@ app.post('/logout', routes.logout );
 
 
 // Custom Wildfire Twitter Trigger Route
-app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
-app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
+// app.post('/ixn/triggers/wildfire-twitter/create', geokey.create );
+// app.get('/ixn/triggers/wildfire-twitter/read', geokey.read );
 
 app.post('/ixn/triggers/wildfire-twitter/edit', trigger.edit );
 
@@ -146,3 +149,26 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
+app.post('/ixn/triggers/wildfire-twitter/create', function(req, res){
+    var tmp2 = req.body;
+    // var tmp = $.parseJSON(tmp2);
+
+    console.log(tmp2);
+
+    var map_data = tmp2.map;
+    var kw_data = tmp2.keywords;
+
+    // console.log(tmp);
+    // console.log(tmp.map);
+
+    fs.writeFile('/tmp/test.txt','{ map : ', map_data, ', keywords : ', kw_data, '}', function(err){
+        if(err){
+            console.log(err);
+        }else{
+            console.log("file was written");
+        }
+    });
+    
+    console.log('map_data', map_data);
+    console.log('kw_data', kw_data)
+});

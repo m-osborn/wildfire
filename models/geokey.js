@@ -8,5 +8,5 @@ var geokeySchema = new Schema({
           },
     keywords: Array,
 }, { collection : 'Geokey' });
-
+console.log('models');
 module.exports = mongoose.model('Geokey', geokeySchema);
